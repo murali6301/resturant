@@ -1,0 +1,114 @@
+/* Contact Page */
+.contact-page {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+                url("images/restaurant-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.contact-container {
+    width: 100%;
+    max-width: 700px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 215, 0, 0.4);
+    border-radius: 24px;
+    padding: 45px 35px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.contact-container h1 {
+    font-size: 44px;
+    color: gold;
+    margin-bottom: 25px;
+}
+
+.contact-container p {
+    font-size: 22px;
+    line-height: 1.8;
+    margin: 14px 0;
+}
+
+.contact-container strong {
+    color: gold;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 26px;
+    background: gold;
+    color: black;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 17px;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    transform: scale(1.05);
+    background: #ffd700;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+    .contact-container {
+        max-width: 90%;
+        padding: 35px 25px;
+    }
+
+    .contact-container h1 {
+        font-size: 34px;
+    }
+
+    .contact-container p {
+        font-size: 19px;
+    }
+
+    .back-btn {
+        font-size: 15px;
+        padding: 10px 22px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .contact-page {
+        padding: 15px;
+    }
+
+    .contact-container {
+        max-width: 100%;
+        padding: 28px 18px;
+        border-radius: 18px;
+    }
+
+    .contact-container h1 {
+        font-size: 28px;
+        margin-bottom: 18px;
+    }
+
+    .contact-container p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .back-btn {
+        width: 100%;
+        max-width: 220px;
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+}

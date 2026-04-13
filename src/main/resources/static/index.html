@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amrutha Restaurant</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 🔝 Top Right Admin Button -->
+<div class="top-bar">
+  <button class="admin-btn" onclick="openLogin()">Admin</button>
+</div>
+
+<div class="top-bot">
+  <button class="resume-btn" onclick="openResume()">Resume Your Order</button>
+</div>
+
+<div class="navbar">
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<div class="logo">
+  <img src="logoimage.jpeg" alt="Amrutha Restaurant Logo">
+</div>
+
+<!-- 🍽️ Main Content -->
+<div class="container">
+  <h1 class="title">Amrutha Restaurant</h1>
+  <p class="subtitle">Delicious Food, Fast Service</p>
+
+  <button class="start-btn" onclick="startOrder()">
+    Start Ordering
+  </button>
+</div>
+
+<!-- 🔐 Admin Login Popup -->
+<div id="loginBox" class="login-box" style="display:none;">
+  <h2>Admin Login</h2>
+
+  <input type="text" placeholder="Username" id="user"><br>
+  <input type="password" placeholder="Password" id="pass"><br>
+
+  <button id="admin-login-btn" onclick="login()" class="login-btn">Login</button>
+  <button onclick="closeLogin()" class="close-btn">Close</button>
+</div>
+
+<!-- Resume Order Popup -->
+<div id="resumeModal" class="modal" style="display:none;">
+  <div class="modal-box">
+    <h2>Resume Your Order</h2>
+    <input type="text" id="orderCode" placeholder="Enter Order Code">
+    <button class="main-btn" onclick="resumeOrder()">Continue</button>
+    <button class="close-btn" onclick="closeResume()">Cancel</button>
+  </div>
+</div>
+
+<p class="order-text">
+  Welcome to Amrutha Restaurant, where every dish is made with care and flavor.<br>
+  Enjoy delicious food, warm ambience, and fast service all in one place.
+</p>
+
+<script>
+  // 🔹 Start ordering
+  function startOrder() {
+      window.location.href = "table.html";
+  }
+
+  // 🔹 Admin login popup
+  function openLogin() {
+      document.getElementById("loginBox").style.display = "block";
+  }
+
+  function closeLogin() {
+      document.getElementById("loginBox").style.display = "none";
+  }
+
+  // 🔹 Login validation
+  function login() {
+      let u = document.getElementById("user").value.trim();
+      let p = document.getElementById("pass").value.trim();
+
+      if(u === "admin" && p === "1234") {
+          alert("Login Success");
+          window.location.href = "admin-dashboard.html"; // redirect to dashboard
+      } else {
+          alert("Invalid Credentials");
+      }
+  }
+
+  // 🔹 Resume Order popup
+  function openResume() {
+      document.getElementById("resumeModal").style.display = "flex";
+  }
+
+  function closeResume() {
+      document.getElementById("resumeModal").style.display = "none";
+  }
+
+  // 🔹 Resume Order fetch
+  function resumeOrder() {
+      const code = document.getElementById("orderCode").value.trim();
+      if(!code){
+          alert("Please enter an Order Code");
+          return;
+      }
+
+      fetch(`http://localhost:8080/api/orders/resume/${code}`)
+      .then(res => {
+          if(!res.ok) throw new Error("Order not found or already completed");
+          return res.json();
+      })
+      .then(data => {
+          // Save to localStorage
+          localStorage.setItem("orderId", data.orderId);
+          localStorage.setItem("tableId", data.tableId);
+          localStorage.setItem("orderCode", data.orderCode);
+
+          // Open menu page
+          window.location.href = "menu.html";
+      })
+      .catch(err => {
+          alert(err.message);
+      });
+  }
+</script>
+
+</body>
+</html>

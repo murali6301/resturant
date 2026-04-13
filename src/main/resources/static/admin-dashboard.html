@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+
+  <style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #111;
+        color: white;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        color: #ffcc00;
+    }
+
+    .metrics {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        background: linear-gradient(135deg, #222, #333);
+        padding: 20px 25px;
+        border-radius: 15px;
+        width: 200px;
+        margin: 10px;
+        box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card h2 {
+        margin: 0 0 10px;
+        font-size: 22px;
+        color: #ffcc00;
+    }
+
+    .card p {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    #orders-section {
+        display: none;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: #1a1a1a;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #444;
+        text-align: center;
+    }
+
+    th {
+        background: #222;
+        color: #ffcc00;
+    }
+
+    tr:hover {
+        background: #222;
+    }
+
+    .paid-btn {
+        background: green;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .paid-btn:hover {
+        background: #00aa00;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<div class="metrics">
+  <div class="card" id="total-orders">
+    <h2>Total Orders</h2>
+    <p>0</p>
+  </div>
+
+  <!-- ✅ Click here to toggle -->
+  <div class="card" id="pending-orders" onclick="toggleOrders()">
+    <h2>Active Orders</h2>
+    <p>0</p>
+  </div>
+
+  <div class="card" id="total-revenue">
+    <h2>Total Revenue</h2>
+    <p>₹0</p>
+  </div>
+
+  <div class="card" id="active-tables">
+    <h2>Free Tables</h2>
+    <p>0</p>
+  </div>
+</div>
+
+<!-- Orders Section -->
+<div id="orders-section">
+
+  <table>
+    <thead>
+    <tr>
+      <th>Order Code</th>
+      <th>Table</th>
+      <th>Items</th>
+      <th>Total</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody id="pending-body"></tbody>
+  </table>
+
+</div>
+
+<script>
+
+  function toggleOrders() {
+      const section = document.getElementById("orders-section");
+
+      if (section.style.display === "none" || section.style.display === "") {
+          section.style.display = "block";
+          loadPendingOrders();
+      } else {
+          section.style.display = "none";
+      }
+  }
+
+  function loadMetrics() {
+      fetch("http://localhost:8080/api/admin/stats")
+      .then(res => res.json())
+      .then(data => {
+          document.querySelector('#total-orders p').innerText = data.totalOrders;
+          document.querySelector('#pending-orders p').innerText = data.pendingOrders;
+          document.querySelector('#total-revenue p').innerText = "₹" + data.totalRevenue;
+          document.querySelector('#active-tables p').innerText = data.freeTables;
+      })
+      .catch(err => console.error("Stats Error:", err));
+  }
+
+  function loadPendingOrders() {
+      fetch("http://localhost:8080/api/admin/pending-orders")
+      .then(res => res.json())
+      .then(data => {
+
+          const tbody = document.getElementById("pending-body");
+          tbody.innerHTML = "";
+
+          if (data.length === 0) {
+              tbody.innerHTML = `
+                  <tr>
+                      <td colspan="5">No Pending Orders</td>
+                  </tr>
+              `;
+              return;
+          }
+
+          data.forEach(order => {
+
+              const row = document.createElement("tr");
+
+              let itemsText = "";
+
+              try {
+                  const items = JSON.parse(order.items);
+
+                  itemsText = items.map(item => {
+                      return `${item.name} x ${item.quantity}`;
+                  }).join("<br>");
+
+              } catch (e) {
+                  itemsText = order.items;
+              }
+
+              row.innerHTML = `
+                  <td>${order.orderCode}</td>
+                  <td>${order.tableId}</td>
+                  <td>${itemsText}</td>
+                  <td>₹${order.totalAmount}</td>
+                  <td>
+                      <button class="paid-btn" onclick="markPaid(${order.id})">
+                          Mark as Paid
+                      </button>
+                  </td>
+              `;
+
+              tbody.appendChild(row);
+          });
+      })
+      .catch(err => {
+          console.error("Pending Orders Error:", err);
+      });
+  }
+
+  function markPaid(orderId) {
+      fetch(`http://localhost:8080/api/admin/mark-paid/${orderId}`, {
+          method: "PUT"
+      })
+      .then(res => res.text())
+      .then(msg => {
+          alert(msg);
+
+          loadMetrics();
+          loadPendingOrders();
+      })
+      .catch(err => {
+          console.error("Mark Paid Error:", err);
+      });
+  }
+
+  // Initial Load
+  loadMetrics();
+
+  // Auto Refresh
+  setInterval(() => {
+      loadMetrics();
+
+      if (document.getElementById("orders-section").style.display === "block") {
+          loadPendingOrders();
+      }
+  }, 5000);
+
+</script>
+
+</body>
+</html>

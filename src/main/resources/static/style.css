@@ -1,0 +1,355 @@
+body {
+    margin: 0;
+    font-family: Arial;
+   background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                   url("firstimage.jpeg");
+
+       background-size: cover;
+       background-position: center;
+       background-attachment: fixed;
+
+       color: white;
+}
+/* Left top navbar container */
+.navbar {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    z-index: 10;
+}
+
+/* About + Contact buttons common style */
+.navbar a {
+    text-decoration: none;
+    color: gold;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 10px 18px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.navbar a:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: scale(1.05);
+}
+
+
+.top-bot {
+    position: absolute;
+    top: 20px;
+    left: 300px;
+}
+
+.resume-btn {
+      text-decoration: none;
+        color: gold;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 10px 18px;
+        border-radius: 18px;
+        backdrop-filter: blur(10px);
+        font-size: 16px;
+        font-weight: bold;
+        transition: 0.3s;
+        display: inline-block;
+}
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .navbar {
+        top: 15px;
+        left: 15px;
+        gap: 10px;
+    }
+
+    .navbar a {
+        font-size: 14px;
+        padding: 8px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        top: 10px;
+        left: 10px;
+        gap: 8px;
+    }
+
+    .navbar a {
+        font-size: 13px;
+        padding: 7px 12px;
+        border-radius: 16px;
+    }
+}
+
+
+/* Hover effect 🔥 */
+.nav-left a:hover {
+    color: orange;
+}
+/* Hover effect 🔥 */
+.nav-lefte a:hover {
+    color: orange;
+}
+
+.logo {
+    position: absolute;
+    top: 70px;
+    left: 680px;
+    z-index: 10;
+}
+
+.logo img {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid gold;
+}
+
+@media (max-width: 768px) {
+    .logo {
+        top: 15px;
+        left: 15px;
+    }
+
+    .logo img {
+        width: 55px;
+        height: 55px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        top: 10px;
+        left: 10px;
+    }
+
+    .logo img {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* Top Admin Button */
+.top-bar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.admin-btn {
+    padding: 10px 20px;
+    background: gold;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* Center Content */
+.container {
+    text-align: center;
+    margin-top: 250px;
+}
+
+.title {
+    font-size: 50px;
+    color: gold;
+}
+
+.subtitle {
+    font-size: 20px;
+    color: #ccc;
+    margin-bottom: 30px;
+}
+
+/* Start Button */
+.start-btn {
+    padding: 15px 40px;
+    font-size: 20px;
+    background: orange;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Login Popup */
+.login-box {
+    display: none;
+    position: fixed;
+    top: 25%;
+    right: 5%;
+    background: #111;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px gold;
+}
+
+.login-box input {
+    width: 200px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.login-box button {
+    padding: 10px 20px;
+    margin: 10px auto;   /* 🔥 main fix */
+    background: orange;
+    width:200px;
+    border: none;
+    color: white;
+    display: block;      /* 🔥 important */
+    cursor: pointer;
+}
+
+.close-btn {
+    background: red;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.modal-box {
+    background: #222;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top:-70px;
+    margin-left:70px;
+    width: 300px;          /* 🔥 FIX */
+    max-width: 90%;        /* mobile kosam */
+
+    text-align: center;
+    animation: pop 0.3s ease;
+}
+
+/* Animation */
+@keyframes pop {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Title */
+.modal-box h2 {
+    color: gold;
+}
+
+/* Input */
+.modal-box input {
+    display:block;
+    width: 100% !important;
+    padding: 12px;
+    border-radius: 8px;
+    box-sizing:border-box;
+    border: none;
+    margin-bottom:15px;
+}
+
+/* Continue button */
+.main-btn {
+    width: 100%;
+    padding: 10px;
+    background: orange;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Cancel button */
+.close-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 8px;
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+/* 📱 Mobile Responsive */
+@media (max-width: 768px) {
+
+    .container {
+        margin-top: 80px;
+        padding: 10px;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+    }
+
+    .start-btn {
+        padding: 12px 25px;
+        font-size: 16px;
+    }
+
+    /* Admin button small */
+    .admin-btn {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    /* Login box center lo kanipinchali */
+    .login-box {
+        top: 20%;
+        right: 50%;
+        transform: translateX(50%);
+        width: 90%;
+        max-width: 300px;
+    }
+
+    .login-box input {
+        width: 100%;
+    }
+}
+.order-text {
+    margin-top: 45px;
+    font-size: 18px;
+    color: #f5e6c8;
+    text-align: center;
+    line-height: 1.6;
+    max-width: 700px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 10px;
+}
+
+@media (max-width: 768px) {
+    .order-text {
+        font-size: 15px;
+        line-height: 1.5;
+        max-width: 95%;
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .order-text {
+        font-size: 14px;
+        line-height: 1.4;
+        max-width: 100%;
+        padding: 0 12px;
+    }
+}

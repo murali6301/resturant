@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select a Table</title>
+
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #1a1a1a;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    h1 {
+        color: gold;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .tables-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .table-btn {
+        padding: 25px;
+        border-radius: 20px;
+        color: white;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: 0.2s;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .available {
+        background: linear-gradient(45deg, #ff7e5f, #feb47b);
+    }
+
+    .occupied {
+        background: #e74c3c;
+        cursor: not-allowed;
+    }
+
+    .table-btn:hover:not(.occupied) {
+        transform: scale(1.1);
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Select a Table</h1>
+<div class="tables-container" id="tables-grid"></div>
+
+<script>
+
+  function loadTables() {
+
+      fetch('http://localhost:8080/api/tables')
+      .then(res => res.json())
+      .then(data => {
+
+          const grid = document.getElementById("tables-grid");
+          grid.innerHTML = "";
+
+          data.forEach(table => {
+
+              const btn = document.createElement("button");
+              btn.className = "table-btn";
+
+              const tableId = table.table_id || table.tableId || table.id;
+              btn.innerText = "Table " + tableId;
+
+              // 🔥 MAIN FIX
+              const occupied =
+    table.isOccupied === true ||
+    table.isOccupied === 1 ||
+    table.is_occupied === 1;
+
+              if (occupied) {
+                  btn.classList.add("occupied");
+                  btn.disabled = true;
+              } else {
+                  btn.classList.add("available");
+
+                  btn.onclick = () => {
+
+                      localStorage.removeItem("cart");
+                      localStorage.removeItem("orderCode");
+
+                      localStorage.setItem("tableId", tableId);
+
+                      alert("Table selected: " + tableId);
+                      window.location.href = "menu.html";
+                  };
+              }
+
+              grid.appendChild(btn);
+          });
+
+      })
+      .catch(() => {
+          document.getElementById("tables-grid").innerHTML =
+              "<p style='color:red;'>Failed to load tables</p>";
+      });
+  }
+
+  // auto refresh
+  loadTables();
+  setInterval(loadTables, 3000);
+
+</script>
+
+</body>
+</html>

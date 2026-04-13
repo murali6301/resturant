@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu</title>
+   <meta charset="UTF-8">
+
+
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #111;
+            color: white;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: orange;
+            margin-bottom: 20px;
+        }
+
+        /* GRID */
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        /* CARD */
+        .card {
+            background: #1f1f1f;
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        /* IMAGE */
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        /* TEXT */
+        .card h3 {
+            margin: 10px 0 5px;
+        }
+        .details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 0 10px;
+}
+
+
+        .price
+         {
+           font-size: 18px;
+            font-weight: bold;
+            color: gold;
+         }
+
+
+        .rating {
+      font-size: 14px;
+       background: #333;
+       padding: 3px 8px;
+       border-radius: 10px;
+     }
+
+        /* BUTTON */
+        .card button {
+            background: linear-gradient(to right, orange, darkorange);
+            border: none;
+            color: white;
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .card button:hover {
+            opacity: 0.9;
+        }
+
+        .menu-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    padding: 15px;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+    .menu-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .menu-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+        /* RESPONSIVE */
+        @media(max-width: 768px) {
+            .menu-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 480px) {
+            .menu-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<h1>Menu</h1>
+<button onclick="goToCart()">Cart</button>
+
+<div id="menu-list" class="menu-container"></div>
+
+<script>
+    const orderId = localStorage.getItem("orderId");
+ const tableId = localStorage.getItem("tableId");
+
+      if(!tableId){
+        alert("please select a table first");
+        window.location.href = "table.html";
+         }
+
+     fetch('http://localhost:8080/api/menu')
+     .then(res => res.json())
+     .then(data => {
+
+         const container = document.getElementById("menu-list");
+
+         data.forEach(item => {
+
+             const card = document.createElement("div");
+             card.className = "card";
+ card.innerHTML = `
+     <img src="${item.imageUrl}" alt="${item.name}">
+     <h3>${item.name}</h3>
+
+     <div class="details">
+         <span class="price">&#8377;${item.price}</span>
+         <span class="rating">&#9733; ${item.rating}</span>
+     </div>
+ `;
+
+ const btn = document.createElement("button");
+ btn.innerText = "Add";
+
+ btn.onclick = () => addToCart(item);
+
+ card.appendChild(btn);
+             container.appendChild(card);
+         });
+     });
+
+
+    function addToCart(item) {
+     let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+
+
+     item.tableId=localStorage.getItem("tableId");
+
+     cart.push(item);
+
+     localStorage.setItem("cart", JSON.stringify(cart));
+
+     alert(item.name + " added to cart");
+
+ }
+     function goToCart() {
+     window.location.href = "cart.html";
+ }
+
+</script>
+
+</body>
+</html>
