@@ -194,18 +194,18 @@
           totalAmount: total
       };
 
-      let url = "http://localhost:8080/api/orders";
+      let url = "/api/orders";
       let method = "POST";
 
       if(orderCode && orderCode.startsWith("ORD")){
-          url = `http://localhost:8080/api/orders/update/${orderCode}`;
+          url = `/api/orders/update/${orderCode}`;
           method = "PUT";
       }
 
       try {
 
           // 🔥 FIX: table ni occupied chey
-          await fetch(`http://localhost:8080/api/tables/select/${tableId}`, {
+          await fetch(`/api/tables/select/${tableId}`, {
               method: "POST"
           });
 

@@ -106,7 +106,7 @@
           return;
       }
 
-      fetch(`http://localhost:8080/api/orders/resume/${code}`)
+      fetch(`/api/orders/resume/${code}`)
       .then(res => {
           if(!res.ok) throw new Error("Order not found or already completed");
           return res.json();

@@ -158,7 +158,7 @@
   }
 
   function loadMetrics() {
-      fetch("http://localhost:8080/api/admin/stats")
+      fetch("/api/admin/stats")
       .then(res => res.json())
       .then(data => {
           document.querySelector('#total-orders p').innerText = data.totalOrders;
@@ -170,7 +170,7 @@
   }
 
   function loadPendingOrders() {
-      fetch("http://localhost:8080/api/admin/pending-orders")
+      fetch("/api/admin/pending-orders")
       .then(res => res.json())
       .then(data => {
 
@@ -224,7 +224,7 @@
   }
 
   function markPaid(orderId) {
-      fetch(`http://localhost:8080/api/admin/mark-paid/${orderId}`, {
+      fetch(`/api/admin/mark-paid/${orderId}`, {
           method: "PUT"
       })
       .then(res => res.text())
